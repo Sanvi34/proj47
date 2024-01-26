@@ -5,6 +5,8 @@ var gunImg,bubbleImg, bulletImg, blastImg, backBoardImg;
 
 var redBubbleGroup, redBubbleGroup, bulletGroup;
 
+var gameOver,gameOVerImg;
+
 
 var life =3;
 var score=0;
@@ -16,16 +18,22 @@ function preload(){
   blueBubbleImg = loadImage("waterBubble.png")
   redBubbleImg = loadImage("redbubble.png")
   backBoardImg= loadImage("back.jpg")
+  gameOverImg= loadImage("gameOver.png")
+
 }
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(1500, 700);
 
-  backBoard= createSprite(50, width/2, 100,height);
+  backBoard= createSprite(50, 100, 100,height);
   backBoard.addImage(backBoardImg)
   
   gun= createSprite(100, height/2, 50,50);
   gun.addImage(gunImg)
   gun.scale=0.2
+
+  gameOver = createSprite(width/2,height/2-50);
+  gameOver.addImage(gameOverImg);
+  gameOver.scale = 0.5;
   
   bulletGroup = createGroup();   
   blueBubbleGroup = createGroup();   
@@ -36,17 +44,19 @@ function setup() {
 }
 
 function draw() {
-  background("#BDA297");
+  background("beige");
+ 
   
   heading.html("Life: "+life)
-  heading.style('color:red'); 
+  heading.style('color:black'); 
   heading.position(150,20)
 
   scoreboard.html("Score: "+score)
-  scoreboard.style('color:red'); 
+  scoreboard.style('color:black'); 
   scoreboard.position(width-200,20)
 
   if(gameState===1){
+    gameOver.visible = false;
     gun.y=mouseY  
 
     if (frameCount % 80 === 0) {
@@ -79,9 +89,9 @@ function draw() {
       handleBubbleCollision(blueBubbleGroup);
     }*/
     
-    /*if(blueBubbleGroup.collide(bulletGroup)){
+    if(blueBubbleGroup.collide(bulletGroup)){
       handleBubbleCollision(blueBubbleGroup);
-    }*/
+    }
 
     if(redBubbleGroup.collide(bulletGroup)){
       handleBubbleCollision(redBubbleGroup);
@@ -94,7 +104,7 @@ function draw() {
 }
 
 function drawblueBubble(){
-  bluebubble = createSprite(800,random(20,780),40,40);
+  bluebubble = createSprite(1500,random(20,780),40,40);
   bluebubble.addImage(blueBubbleImg);
   bluebubble.scale = 0.1;
   bluebubble.velocityX = -8;
@@ -102,7 +112,7 @@ function drawblueBubble(){
   blueBubbleGroup.add(bluebubble);
 }
 function drawredBubble(){
-  redbubble = createSprite(800,random(20,780),40,40);
+  redbubble = createSprite(1500,random(20,780),40,40);
   redbubble.addImage(redBubbleImg);
   redbubble.scale = 0.1;
   redbubble.velocityX = -8;
@@ -115,7 +125,7 @@ function shootBullet(){
   bullet.y= gun.y-20
   bullet.addImage(bulletImg)
   bullet.scale=0.12
-  bullet.velocityX= 7
+  bullet.velocityX= 9
   bulletGroup.add(bullet)
 }
 
@@ -131,22 +141,22 @@ function handleBubbleCollision(bubbleGroup){
 
 function handleGameover(bubbleGroup){
   
-    /*life=life-1;
-    bubbleGroup.destroyEach();*/
+    life=life-1;
+    bubbleGroup.destroyEach();
 
      /*life=life+1;
-    bubbleGroup.destroyEach();*/
+    bubbleGroup.destroyEach();
 
      /*life=life-1;
     bubbleGroup.destroy();*/
 
-     /*life=life-1;
+    /* life=life-1;
     bubble.destroyEach();*/
     
 
     if (life === 0) {
       gameState=2
-      
+      gameOver.visible = true;
      
     }
   
